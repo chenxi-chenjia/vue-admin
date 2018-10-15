@@ -1,0 +1,119 @@
+<template>
+    <div :class="classObj" class="app-wrapper">
+        <div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside"/>
+        <div class="sidebarBox">
+            <div class="logo" :class="classObj.openSidebar? 'logo-open' : 'logo-close' ">
+                <img src="@/assets/logo.png" alt="" class="logo-img">
+                <transition name="fade">
+                    <h3 v-if="classObj.openSidebar">立等</h3>
+                </transition>
+            </div>
+            <sidebar class="sidebar-container"/>
+        </div>
+        <div class="main-container">
+            <navbar/>
+            <app-main/>
+        </div>
+    </div>
+</template>
+
+<script>
+    import { Navbar, Sidebar, AppMain } from './components'
+    import ResizeMixin from './mixin/ResizeHandler'
+
+    export default {
+        name: 'Layout',
+        components: {
+            Navbar,
+            Sidebar,
+            AppMain
+        },
+        mixins: [ ResizeMixin ],
+        computed: {
+            sidebar(){
+                return this.$store.state.app.sidebar
+            },
+            device(){
+                return this.$store.state.app.device
+            },
+            classObj(){
+                return {
+                    hideSidebar: ! this.sidebar.opened,
+                    openSidebar: this.sidebar.opened,
+                    withoutAnimation: this.sidebar.withoutAnimation,
+                    mobile: this.device === 'mobile'
+                }
+            }
+        },
+        methods: {
+            handleClickOutside(){
+                this.$store.dispatch('CloseSideBar', { withoutAnimation: false })
+            }
+        }
+    }
+</script>
+
+<style rel="stylesheet/scss" lang="scss" scoped>
+    @import "src/styles/mixin.scss";
+
+    .app-wrapper {
+        @include clearfix;
+        position: relative;
+        height: 100%;
+        width: 100%;
+        &.mobile.openSidebar {
+            position: fixed;
+            top: 0;
+        }
+    }
+
+    .drawer-bg {
+        background: #000;
+        opacity: 0.3;
+        width: 100%;
+        top: 0;
+        height: 100%;
+        position: absolute;
+        z-index: 999;
+    }
+
+    .sidebarBox {
+        position: fixed;
+        padding-top: 50px;
+        height: 100%;
+    }
+
+    .sidebar-container {
+        position: relative !important;
+    }
+
+    .logo {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 50px;
+        background-color: #29c7ca;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        box-sizing: border-box;
+        h3 {
+            margin: 0 0 0 15px;
+        }
+
+    }
+
+    .logo.logo-open {
+        padding-left: 10px;
+    }
+
+    .logo.logo-close {
+        justify-content: center;
+    }
+
+    .logo-img {
+        width: 25px;
+        height: 25px;
+    }
+</style>
