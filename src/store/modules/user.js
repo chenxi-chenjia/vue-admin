@@ -1,5 +1,6 @@
 import { login, logout, getInfo } from '@/api/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
+import { Message } from "element-ui";
 
 const user = {
     state: {
@@ -30,7 +31,12 @@ const user = {
             const username = userInfo.username.trim()
             return new Promise((resolve, reject) => {
                 login(username, userInfo.password).then(response => {
-                    const data = response.data
+                    const data = response.data.data
+                    if ( response.data.errorCode != 0 ){
+                        Message.error(response.data.errorMessage)
+                        reject()
+                        return
+                    }
                     setToken(data.token)
                     commit('SET_TOKEN', data.token)
                     resolve()
@@ -43,14 +49,21 @@ const user = {
         // 获取用户信息
         GetInfo({ commit, state }){
             return new Promise((resolve, reject) => {
-                getInfo(state.token).then(response => {
-                    const data = response.data
+                getInfo().then(response => {
+                    const data = response.data.data
+                    if ( response.data.errorCode != 0 ){
+                        reject(response.data.errorMessage)
+                        this.$store.dispatch('FedLogOut').then(() => {
+                            location.reload() // 为了重新实例化vue-router对象 避免bug
+                        })
+                        return
+                    }
                     if ( data.roles && data.roles.length > 0 ){ // 验证返回的roles是否是一个非空数组
                         commit('SET_ROLES', data.roles)
                     } else {
                         reject('getInfo: roles must be a non-null array !')
                     }
-                    commit('SET_NAME', data.name)
+                    commit('SET_NAME', data.username)
                     commit('SET_AVATAR', data.avatar)
                     resolve(response)
                 }).catch(error => {

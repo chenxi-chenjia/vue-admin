@@ -1,5 +1,5 @@
 <template>
-    <el-breadcrumb class="app-breadcrumb"  separator-class="el-icon-arrow-right">
+    <el-breadcrumb class="app-breadcrumb" separator-class="el-icon-arrow-right">
         <transition-group name="breadcrumb">
             <el-breadcrumb-item v-for="(item,index) in levelList" v-if="item.meta.title" :key="item.path">
                 <span v-if="item.redirect==='noredirect'||index==levelList.length-1" class="no-redirect">{{ item.meta.title }}</span>
@@ -39,7 +39,7 @@
                 })
                 const first = matched[ 0 ]
                 if ( first && first.name !== 'dashboard' ){
-                    matched = [ { path: '/dashboard', meta: { title: 'Dashboard' } } ].concat(matched)
+                    matched = [ { path: '/dashboard', meta: { title: '首页' } } ].concat(matched)
                 }
                 this.levelList = matched
             }

@@ -6,8 +6,7 @@ export function getToken(){
 }
 
 export function setToken(token){
-    const result = JSON.stringify(token)
-    return sessionStorage.setItem(TokenKey, result)
+    return sessionStorage.setItem(TokenKey, token)
 }
 
 export function removeToken(){

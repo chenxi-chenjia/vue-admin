@@ -1,7 +1,18 @@
 <template>
-    <div class="dashboard-container">
-        <div class="dashboard-text">name:{{ name }}</div>
-        <div class="dashboard-text">roles:<span v-for="role in roles" :key="role">{{ role }}</span></div>
+    <div class="app-container">
+        <el-row>
+            <el-col :span="4">
+                <el-card class="box-card">
+                    <div slot="header" class="clearfix">
+                        <span>卡片名称</span>
+                        <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
+                    </div>
+                    <div v-for="o in 4" :key="o" class="text item">
+                        {{'列表内容 ' + o }}
+                    </div>
+                </el-card>
+            </el-col>
+        </el-row>
     </div>
 </template>
 
@@ -20,13 +31,6 @@
 </script>
 
 <style rel="stylesheet/less" lang="less" scoped>
-    .dashboard {
-        &-container {
-            margin: 30px;
-        }
-        &-text {
-            font-size: 30px;
-            line-height: 46px;
-        }
-    }
+
+
 </style>

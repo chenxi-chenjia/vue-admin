@@ -33,11 +33,11 @@ export const constantRouterMap = [
         hidden: true,
         children: [ {
             path: 'dashboard',
-            component: () => import('@/views/dashboard/index')
+            component: () => import('@/views/dashboard/index'),
         } ]
     },
 
-    { path: '*', redirect: '/404', hidden: true }
+
 ]
 
 export default new Router({
@@ -45,3 +45,85 @@ export default new Router({
     scrollBehavior: () => ({ y: 0 }),
     routes: constantRouterMap
 })
+
+export const asyncRouterMap = [
+    {
+        path: '/userManage',
+        component: Layout,
+        name: 'UserManage',
+        redirect: 'noredirect',
+        meta: {
+            title: '用户管理',
+            icon: 'lock',
+            roles: [ 'admin' ],
+        },
+        children: [
+            {
+                path: 'teacherManage',
+                name: 'TeacherManage',
+                component:() => import('@/views/manage'),
+                redirect: '/userManage/teacherManage/index',
+                meta: { title: '员工管理' },
+                children: [
+                    {
+                        path: 'index',
+                        component: () => import('@/views/manage/teacherManage/teacherList'),
+                        meta: {
+                            title: '员工管理',
+                        }
+                    },
+                    {
+                        name: 'AddTeacher',
+                        path: 'addTeacher',
+                        component: () => import('@/views/manage/teacherManage/addTeacher'),
+                        hidden: true,
+                        meta: {
+                            title: '添加员工',
+                            icon: ''
+                        }
+                    },{
+                        name: 'UpdateTeacher',
+                        path: 'updateTeacher',
+                        component: () => import('@/views/manage/teacherManage/updateTeacher'),
+                        hidden: true,
+                        meta: {
+                            title: ' 修改员工信息',
+                            icon: ''
+                        }
+                    },
+                ]
+            },
+            {
+                path: 'studentManage',
+                name: 'StudentManage',
+                redirect: '/userManage/studentManage/index',
+                component:() => import('@/views/manage'),
+                meta: {
+                    title: '学员管理'
+                },
+                children: [
+                    {
+                        path: 'index',
+                        component: () => import('@/views/manage/userManage'),
+                        meta: {
+                            title: '学生管理',
+                        }
+                    },
+                    {
+                        name: 'AddStudent',
+                        path: 'addStudent',
+                        component: () => import('@/views/manage/userManage'),
+                        hidden: true,
+                        meta: {
+                            title: '添加学员',
+                            icon: ''
+                        }
+                    },
+                ]
+            },
+        ]
+    },
+
+    { path: '*', redirect: '/404', hidden: true }
+]
+

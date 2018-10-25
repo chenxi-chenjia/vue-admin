@@ -92,6 +92,7 @@
                 this.$refs.loginForm.validate(valid => {
                     if ( valid ){
                         this.loading = true
+
                         this.$store.dispatch('Login', this.loginForm).then(() => {
                             this.loading = false
                             this.$router.push({ path: this.redirect || '/' })
@@ -99,11 +100,15 @@
                             this.loading = false
                         })
                     } else {
-                        console.log('error submit!!')
+                        console.log('输入有误，请重新输入')
                         return false
                     }
                 })
-            }
+            },
+
+        },
+        created(){
+
         }
     }
 </script>

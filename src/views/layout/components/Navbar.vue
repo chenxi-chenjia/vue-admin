@@ -4,7 +4,7 @@
         <breadcrumb/>
 
 
-        <el-dropdown class="avatar-container" trigger="hover">
+        <el-dropdown class="avatar-container" style="margin-right: 35px;" trigger="hover">
             <div class="avatar-wrapper navbar-item">
                 <i class="iconfont myicon-user"></i>
             </div>
@@ -19,16 +19,40 @@
                 </el-dropdown-item>
             </el-dropdown-menu>
         </el-dropdown>
-        <el-autocomplete
-            class="search-input"
-            v-model="searchContent"
-            :fetch-suggestions="querySearch"
-            placeholder="请输入内容"
-            :trigger-on-focus="false"
-            @select="handleSelect"
-        >
-            <i slot="prefix" class="el-input__icon el-icon-search"></i>
-        </el-autocomplete>
+
+        <div class="avatar-wrapper navbar-item avatar-container">
+            <el-badge style="height: 20px;line-height: 20px;" :value="12">
+                <svg-icon style="width: 20px;height: 20px;vertical-align: middle;" icon-class="notifier"></svg-icon>
+            </el-badge>
+        </div>
+
+
+        <transition name="fade-transform" mode="out-in">
+            <div
+                @click="searchBtnClick"
+                class="avatar-wrapper navbar-item avatar-container"
+
+            >
+                <i class="el-icon-search" style="color: #515151;"></i>
+            </div>
+        </transition>
+
+        <transition name="fade-transform" mode="out-in">
+            <el-autocomplete
+                ref="searchInput"
+                @blur="searchBtnShow = !searchBtnShow"
+                v-if="!searchBtnShow"
+                class="search-input"
+                v-model="searchContent"
+                :fetch-suggestions="querySearch"
+                placeholder="请输入内容"
+                :trigger-on-focus="false"
+                @select="handleSelect"
+            >
+                <i slot="prefix" class="el-input__icon el-icon-search"></i>
+            </el-autocomplete>
+        </transition>
+
     </el-menu>
 </template>
 
@@ -49,8 +73,9 @@
             ])
         },
         data(){
-            return{
-                searchContent
+            return {
+                searchContent: '',
+                searchBtnShow: true,
             }
         },
         methods: {
@@ -71,6 +96,12 @@
             },
             handleSelect(item){
 
+            },
+            searchBtnClick(){
+                this.searchBtnShow = false
+                setTimeout(() => {
+                    this.$refs.searchInput.focus()
+                }, 500)
             }
         }
     }
@@ -97,7 +128,7 @@
         .avatar-container {
             height: 50px;
             float: right;
-            margin-right: 35px;
+            cursor: pointer;
             .avatar-wrapper {
                 cursor: pointer;
                 margin-top: 5px;
@@ -116,7 +147,8 @@
             }
         }
     }
-    .search-input{
+
+    .search-input {
         float: right;
         margin-right: 30px;
     }

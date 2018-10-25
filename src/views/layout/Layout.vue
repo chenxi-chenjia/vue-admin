@@ -11,7 +11,7 @@
             <sidebar class="sidebar-container"/>
         </div>
         <div class="main-container">
-            <navbar/>
+            <navbar />
             <app-main/>
         </div>
     </div>
@@ -67,6 +67,7 @@
         }
     }
 
+
     .drawer-bg {
         background: #000;
         opacity: 0.3;
@@ -79,7 +80,6 @@
 
     .sidebarBox {
         position: fixed;
-        padding-top: 50px;
         height: 100%;
     }
 
@@ -88,16 +88,11 @@
     }
 
     .logo {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
         height: 50px;
         background-color: #29c7ca;
         color: #fff;
         display: flex;
         align-items: center;
-        box-sizing: border-box;
         h3 {
             margin: 0 0 0 15px;
         }
